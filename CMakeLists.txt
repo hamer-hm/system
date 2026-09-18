@@ -2,10 +2,13 @@ cmake_minimum_required(VERSION 3.19)
 project(system LANGUAGES CXX)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Sql)
 
 qt_standard_project_setup()
 
 set(CMAKE_AUTORCC on)
+set(CMAKE_AUTOUIC on)
+set(CMAKE_AUTOMOC on)
 qt_add_executable(system
     WIN32 MACOSX_BUNDLE
     main.cpp
@@ -13,12 +16,17 @@ qt_add_executable(system
     mainwindow.h
     mainwindow.ui
     res.qrc
+    dbmanager.h dbmanager.cpp
+    stockwidget.h stockwidget.cpp stockwidget.ui
+
 )
+target_include_directories(system PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(system
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt::Sql
 )
 
 include(GNUInstallDirs)

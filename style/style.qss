@@ -264,14 +264,27 @@ QComboBox::drop-down {
 
 QComboBox QAbstractItemView {
     background: #1e1b4b;
-    border: 1px solid rgba(168, 85, 247, 0.35);
+    border: 1px solid rgba(168, 85, 247, 0.55);
     border-radius: 12px;
     color: #ffffff;
     selection-background-color: rgba(168, 85, 247, 0.55);
     selection-color: #ffffff;
-    padding: 4px;
+    outline: none;
 }
-
+QComboBox QAbstractItemView::item {
+    min-height:28px;
+    padding:6px 8px;
+}
+/* 兜底：表格代理弹出的列表视图 */
+QAbstractItemView#comboPopupView {
+    background: #1e1b4b;
+    border: 1px solid rgba(168, 85, 247, 0.55);
+    border-radius: 12px;
+}
+QAbstractItemView#comboPopupView::item{
+    min-height:28px;
+    padding:6px 8px;
+}
 /* ──────────────────────────────────────────────────────────────
    9. 表格  深色玻璃风
    ────────────────────────────────────────────────────────────── */
@@ -532,4 +545,20 @@ QStatusBar {
 
 QStatusBar::item {
     border: none;
+}
+
+
+
+/* ========== 新增：表格单元格编辑器 ========== */
+/* 表格单元格编辑器：内边距要小，否则撑不下文字 */
+QTableView::item {
+    padding: 6px 5px;
+}
+
+QTableView QLineEdit,
+QTableView QComboBox
+{
+    padding: 10 3px;
+    min-height: 20px;
+    border-radius: 6px;
 }
