@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>926</width>
+    <width>976</width>
     <height>396</height>
    </rect>
   </property>
@@ -40,7 +40,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page_BaseInfo">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -101,7 +101,7 @@
        </layout>
       </widget>
       <widget class="StockWidget" name="page_Stock"/>
-      <widget class="QWidget" name="page_SaleCreate"/>
+      <widget class="SaleOrderWidget" name="page_SaleCreate"/>
       <widget class="QWidget" name="page_OrderQuery"/>
       <widget class="QWidget" name="page_Customer"/>
       <widget class="QWidget" name="page_Report"/>
@@ -297,6 +297,12 @@
    <class>StockWidget</class>
    <extends>QWidget</extends>
    <header>stockwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SaleOrderWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">saleorderwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

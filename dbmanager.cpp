@@ -4,6 +4,7 @@
 #include<QDir>
 #include<QSettings>
 #include<QSqlQuery>
+
 DBManager &DBManager::instance()
 {
     static DBManager instance;

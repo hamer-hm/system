@@ -42,13 +42,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnStockEdit">
-         <property name="text">
-          <string>修改</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="btnStockDel">
          <property name="text">
           <string>删除</string>

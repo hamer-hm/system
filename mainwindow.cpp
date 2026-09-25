@@ -19,11 +19,18 @@
 #include<QFileDialog>
 #include<QFile>
 #include"stockwidget.h"
+#include"saleorderwidget.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    QString iniFile = QCoreApplication::applicationDirPath() + "/config.ini";//设置ini文件路径
+    QSettings setting(iniFile,QSettings::IniFormat);//新建ini文件
+    QString path=setting.value("dbPath","D:/system/system/steel_sales.db").toString();//从ini文件中读取数据库路径
+    bool res=DBManager::instance().openDB(path);//打开数据库
     ui->setupUi(this);
+    //设置拉伸
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //设置tableView行为/模式
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectItems);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -40,17 +47,18 @@ MainWindow::MainWindow(QWidget *parent)
     //切换stackedWidget页面
     connect(btnGroup,&QButtonGroup::idClicked,ui->stackedWidget,&QStackedWidget::setCurrentIndex);
 
-    QString iniFile = QCoreApplication::applicationDirPath() + "/config.ini";//设置ini文件路径
-    QSettings setting(iniFile,QSettings::IniFormat);//新建ini文件
-    QString path=setting.value("dbPath","D:/system/system/steel_sales.db").toString();//从ini文件中读取数据库路径
-    bool res=DBManager::instance().openDB(path);//打开数据库
+    //判断数据库打开成不成功
     if(res)
     {
     //基础资料
     openSpecTable();
 
     //库存管理
-    openStockTable();
+    // openStockTable();
+    }else
+    {
+        QMessageBox::critical(this, "数据库错误",
+                              "无法打开数据库：\n" + path + "\n\n请检查 config.ini 中的 dbPath");
     }
 
 
@@ -291,8 +299,7 @@ void MainWindow::on_btnDel_clicked()
         return;
     if(specModel->removeRow(curIndex.row()))
     {
-        bool ok=QMessageBox::information(this,"提示","删除行成功！");
-        if(ok)
+        QMessageBox::information(this,"提示","删除行成功！");
         specModel->select();//刷新
     }else
     {

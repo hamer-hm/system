@@ -18,9 +18,16 @@ qt_add_executable(system
     res.qrc
     dbmanager.h dbmanager.cpp
     stockwidget.h stockwidget.cpp stockwidget.ui
+    stockindialog.h stockindialog.cpp stockindialog.ui
+    saleorderwidget.h saleorderwidget.cpp saleorderwidget.ui
+    specdelegate.h specdelegate.cpp
+    numericdelegate.h numericdelegate.cpp
+    orderquerywidget.h orderquerywidget.cpp orderquerywidget.ui
 
 )
-target_include_directories(system PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(system PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(system
     PRIVATE

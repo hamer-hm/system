@@ -22,6 +22,11 @@ private:
 signals:
 private slots:
     void on_btnStockIn_clicked();
+    void on_btnStockDel_clicked();
+
+    // QWidget interface
+protected:
+    void showEvent(QShowEvent *event) override;
 };
 
 #endif // STOCKWIDGET_H
