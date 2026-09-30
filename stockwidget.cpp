@@ -25,26 +25,34 @@ StockWidget::~StockWidget()
 void StockWidget::loadStockTable()
 {
     auto &db=DBManager::instance().getDB();//获取数据库
-    m_stockModel=new QSqlRelationalTableModel(this,db);
-    m_stockModel->setTable("stock");
-    //设置编辑策略
-    m_stockModel->setEditStrategy(QSqlRelationalTableModel::OnRowChange);
+    if(!m_stockModel)
+    {
+        m_stockModel=new QSqlRelationalTableModel(this,db);
+        m_stockModel->setTable("stock");
+        //设置编辑策略
+        m_stockModel->setEditStrategy(QSqlRelationalTableModel::OnRowChange);
 
-    int specCol = m_stockModel->record().indexOf("typeId");
-    m_stockModel->setRelation(specCol, QSqlRelation("steel_type", "typeId", "typeName"));
+        //将typeName替换为typeName
+        int specCol = m_stockModel->record().indexOf("typeId");
+        m_stockModel->setRelation(specCol, QSqlRelation("steel_type", "typeId", "typeName"));
+
+        //设置表头
+        m_stockModel->setHeaderData(m_stockModel->record().indexOf("stockId"), Qt::Horizontal, "库存ID");
+        m_stockModel->setHeaderData(m_stockModel->record().indexOf("typeName"), Qt::Horizontal, "钢材规格");
+        m_stockModel->setHeaderData(m_stockModel->record().indexOf("stockNum"), Qt::Horizontal, "库存数量(吨)");
+        m_stockModel->setHeaderData(m_stockModel->record().indexOf("costPrice"), Qt::Horizontal, "成本单价");
+        m_stockModel->setHeaderData(m_stockModel->record().indexOf("updateTime"), Qt::Horizontal, "更新时间");
+
+        //设置model
+        ui->tableView->setModel(m_stockModel);
+        //隐藏specId列
+        ui->tableView->setColumnHidden(1,true);
+        //设置代理
+        ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
+        //设置拉伸
+        ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    }
     m_stockModel->select();
-
-    m_stockModel->setHeaderData(m_stockModel->record().indexOf("stockId"), Qt::Horizontal, "库存ID");
-    m_stockModel->setHeaderData(m_stockModel->record().indexOf("typeName"), Qt::Horizontal, "钢材规格");
-    m_stockModel->setHeaderData(m_stockModel->record().indexOf("stockNum"), Qt::Horizontal, "库存数量(吨)");
-    m_stockModel->setHeaderData(m_stockModel->record().indexOf("costPrice"), Qt::Horizontal, "成本单价");
-    m_stockModel->setHeaderData(m_stockModel->record().indexOf("updateTime"), Qt::Horizontal, "更新时间");
-
-    ui->tableView->setModel(m_stockModel);
-    ui->tableView->setColumnHidden(1,true);  //隐藏specId列
-    ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));//设置代理
-
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //设置拉伸
 
 }
 

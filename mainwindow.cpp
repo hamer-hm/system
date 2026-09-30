@@ -244,13 +244,6 @@ void MainWindow::onFormBtnCancelClicked()
 }
 
 
-//打开销售表
-void MainWindow::openStockTable()
-{
-    ui->page_Stock->loadStockTable();
-}
-
-
 void MainWindow::on_btnAdd_clicked()
 {
     dlg=new QDialog(this);

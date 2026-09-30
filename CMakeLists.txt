@@ -23,6 +23,7 @@ qt_add_executable(system
     specdelegate.h specdelegate.cpp
     numericdelegate.h numericdelegate.cpp
     orderquerywidget.h orderquerywidget.cpp orderquerywidget.ui
+    customermanagewidget.h customermanagewidget.cpp customermanagewidget.ui
 
 )
 target_include_directories(system PRIVATE
