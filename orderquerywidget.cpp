@@ -81,6 +81,8 @@ void OrderQueryWidget::loadOrderQueryWidget()
         m_orderModel->setHorizontalHeaderLabels({"订单号","客户名称","下单日期","总额","状态"});
         //自动缩放
         ui->tableViewOrder->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        //设置不可编辑
+        ui->tableViewOrder->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->tableViewOrder->setModel(m_orderModel);
     }
     //设置从表
@@ -91,6 +93,8 @@ void OrderQueryWidget::loadOrderQueryWidget()
         m_itemModel->setHorizontalHeaderLabels({"钢材类型","销售数量","销售单价","小计"});
         //自动缩放
         ui->tableViewItem->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        //设置不可编辑
+        ui->tableViewItem->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->tableViewItem->setModel(m_itemModel);
     }
     //绑定点击主表从表显示明细
@@ -130,10 +134,6 @@ void OrderQueryWidget::on_btnQuery_clicked()
     {
         sql += " AND s.orderId=:orderId";
         hasOrderId = true;
-    }else
-    {
-        QMessageBox::warning(this,"提示","订单号必须为大于1的整数");
-        return;
     }
     //客户名称
     int custId = 0;
@@ -200,7 +200,7 @@ void OrderQueryWidget::on_btnQuery_clicked()
 //从表明细
 void OrderQueryWidget::onOrderSelected(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    qDebug() << "选中触发";
+    // qDebug() << "选中触发";
     // 取消选中时直接退出，防止越界
     if(selected.isEmpty()) return;
     //表清空数据
@@ -270,7 +270,7 @@ void OrderQueryWidget::loadOrderTable(QSqlQuery &query)
         row << new QStandardItem(orderDate);
         row << new QStandardItem(QString::number(total,'f',2));
         row << new QStandardItem(status);
-
+        //追加行
         m_orderModel->appendRow(row);
     }
     // 没有查到任何数据

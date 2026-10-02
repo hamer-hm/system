@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     //设置拉伸
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     //设置tableView行为/模式
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectItems);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -91,6 +92,7 @@ void MainWindow::openSpecTable()
         specModel->setHeaderData(rec.indexOf("unit"), Qt::Horizontal, "单位");
         specModel->setHeaderData(rec.indexOf("price"), Qt::Horizontal, "参考单价");
         specModel->setHeaderData(rec.indexOf("remark"), Qt::Horizontal, "备注");
+
 
         ui->tableView->setModel(specModel);
         ui->tableView->setSelectionModel(selModel);

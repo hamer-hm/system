@@ -24,6 +24,9 @@ qt_add_executable(system
     numericdelegate.h numericdelegate.cpp
     orderquerywidget.h orderquerywidget.cpp orderquerywidget.ui
     customermanagewidget.h customermanagewidget.cpp customermanagewidget.ui
+    customereditdialog.h customereditdialog.cpp
+    customereditdialog.h customereditdialog.cpp customereditdialog.ui
+    reportwidget.h reportwidget.cpp reportwidget.ui
 
 )
 target_include_directories(system PRIVATE

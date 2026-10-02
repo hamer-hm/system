@@ -40,7 +40,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="page_BaseInfo">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -103,7 +103,7 @@
       <widget class="StockWidget" name="page_Stock"/>
       <widget class="SaleOrderWidget" name="page_SaleCreate"/>
       <widget class="OrderQueryWidget" name="page_OrderQuery"/>
-      <widget class="QWidget" name="page_Customer"/>
+      <widget class="CustomerManageWidget" name="page_Customer"/>
       <widget class="QWidget" name="page_Report"/>
       <widget class="QWidget" name="page_Setting"/>
      </widget>
@@ -309,6 +309,12 @@
    <class>OrderQueryWidget</class>
    <extends>QWidget</extends>
    <header location="global">orderquerywidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CustomerManageWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">customermanagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
