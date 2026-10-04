@@ -70,7 +70,9 @@ bool DBManager::setDBPath(const QString &path)
     QDir().mkpath(configDir);
 
     QSettings setting(configDir + "/config.ini", QSettings::IniFormat);
+    setting.beginGroup("dbPath");
     setting.setValue("dbPath", path);
+    setting.endGroup();
     setting.sync();   // 立即写盘
     emit databaseChanged(dbPath);
     return true;

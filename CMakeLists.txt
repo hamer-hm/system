@@ -29,6 +29,7 @@ qt_add_executable(system
     reportwidget.h reportwidget.cpp reportwidget.ui
     baseinfowidget.h baseinfowidget.cpp baseinfowidget.ui
     logindialog.h logindialog.cpp logindialog.ui
+    systemsettingswidget.h systemsettingswidget.cpp systemsettingswidget.ui
 
 )
 target_include_directories(system PRIVATE

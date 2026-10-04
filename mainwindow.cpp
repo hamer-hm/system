@@ -26,8 +26,11 @@ MainWindow::MainWindow(QWidget *parent)
     QString defaultDbPath = QCoreApplication::applicationDirPath() + "/steel_sales.db";
     QString dbPath = setting.value("dbPath", defaultDbPath).toString();
 
-    if (!setting.contains("dbPath")) {
+    if (!setting.contains("dbPath"))
+    {
+        setting.beginGroup("dbPath");
         setting.setValue("dbPath", dbPath);
+        setting.endGroup();
         setting.sync();   // 强制写盘
     }
     // 打开数据库
