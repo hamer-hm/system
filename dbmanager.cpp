@@ -4,7 +4,7 @@
 #include<QDir>
 #include<QSettings>
 #include<QSqlQuery>
-
+#include<QStandardPaths>
 DBManager &DBManager::instance()
 {
     static DBManager instance;
@@ -43,17 +43,37 @@ QString DBManager::getDBPath() const
 }
 
 //设置数据库路径
-void DBManager::setDBPath(const QString &path)
+bool DBManager::setDBPath(const QString &path)
 {
-    if(dbPath==path)
-        return;
-    dbPath=path;
-    closeDB();
-    openDB(path);
+    if (path.isEmpty())
+        return false;
 
-    QString iniFile = QCoreApplication::applicationDirPath() + "/config.ini";//设置ini文件路径
-    QSettings setting(iniFile,QSettings::IniFormat);//新建ini文件
-    setting.setValue("dbPath",dbPath);
+    if (dbPath == path)
+        return true;
+
+    const QString oldPath = dbPath;
+
+    // 1. 关闭旧库，尝试打开新库
+    closeDB();
+    if (!openDB(path)) {
+        // 2. 失败回滚到旧库
+        if (!oldPath.isEmpty())
+            openDB(oldPath);
+        return false;
+    }
+
+    // 3. 成功才写 ini
+    QString configDir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    if (configDir.isEmpty())
+        configDir = QCoreApplication::applicationDirPath();
+    //路径不存在创建路径
+    QDir().mkpath(configDir);
+
+    QSettings setting(configDir + "/config.ini", QSettings::IniFormat);
+    setting.setValue("dbPath", path);
+    setting.sync();   // 立即写盘
+    emit databaseChanged(dbPath);
+    return true;
 }
 
 DBManager::DBManager(QObject *parent)
@@ -70,7 +90,6 @@ DBManager::~DBManager()
 
 QSqlDatabase& DBManager::getDB()
 {
-    qDebug() << "db file path:" << DB.databaseName();
     return DB;
 }
 

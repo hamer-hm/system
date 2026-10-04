@@ -14,7 +14,7 @@ public:
     void closeDB();
     bool openDB(const QString &path);
     QString getDBPath()const;
-    void setDBPath(const QString &path);
+    bool setDBPath(const QString &path);
     ~DBManager();
     QSqlDatabase &getDB();
 private:
@@ -22,6 +22,7 @@ private:
     QSqlDatabase DB;
     QString dbPath="D:/system/system/steel_sales.db";
 signals:
+    void databaseChanged(const QString &Path);
 };
 
 #endif // DBMANAGER_H

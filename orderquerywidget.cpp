@@ -11,7 +11,13 @@ OrderQueryWidget::OrderQueryWidget(QWidget *parent)
     , ui(new Ui::OrderQueryWidget)
 {
     ui->setupUi(this);
-    // loadOrderQueryWidget();
+    //订单号输入验证器
+    QRegularExpression reg("^[0-9]+$");
+    ui->editOrderNo->setValidator(new QRegularExpressionValidator(reg, this));
+
+    initModel();
+    reload();
+
 }
 
 OrderQueryWidget::~OrderQueryWidget()
@@ -19,6 +25,53 @@ OrderQueryWidget::~OrderQueryWidget()
     delete ui;
 }
 
+//外部刷新接口（切库时调用）
+void OrderQueryWidget::reload()
+{
+    //清空主从表
+    m_orderModel->removeRows(0, m_orderModel->rowCount());
+    m_itemModel->removeRows(0, m_itemModel->rowCount());
+    //重新加载客户下拉框
+    loadCustomerCombo();
+    //重新加载订单状态下拉框
+    loadStatusCombo();
+    //重置默认时间
+    QDateTime curTime = QDateTime::currentDateTime();
+    //默认开始时间是当天
+    ui->dateStart->setDateTime(curTime);
+    //默认结束时间是明天
+    ui->dateEnd->setDateTime(curTime.addDays(1));
+}
+
+//初始化表格模型
+void OrderQueryWidget::initModel()
+{
+    //主表
+    m_orderModel = new QStandardItemModel(this);
+    //设置表头
+    m_orderModel->setHorizontalHeaderLabels({"订单号", "客户名称", "下单日期", "总额", "状态"});
+    //自动缩放
+    ui->tableViewOrder->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //设置不可编辑
+    ui->tableViewOrder->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableViewOrder->setModel(m_orderModel);
+
+    //从表
+    m_itemModel = new QStandardItemModel(this);
+    //设置表头
+    m_itemModel->setHorizontalHeaderLabels({"钢材类型", "销售数量", "销售单价", "小计"});
+    //自动缩放
+    ui->tableViewItem->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //设置不可编辑
+    ui->tableViewItem->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableViewItem->setModel(m_itemModel);
+
+    //绑定点击主表从表显示明细
+    connect(ui->tableViewOrder->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &OrderQueryWidget::onOrderSelected);
+}
+
+//开启日期筛选
 void OrderQueryWidget::on_chkDateEnable_clicked(bool checked)
 {
     ui->dateStart->setEnabled(checked);
@@ -56,63 +109,11 @@ void OrderQueryWidget::loadStatusCombo()
     ui->cbOrderStatus->addItems(status);
 }
 
-
-//加载widget信息
-void OrderQueryWidget::loadOrderQueryWidget()
-{
-    QRegularExpression reg("^[0-9]+$");
-    ui->editOrderNo->setValidator(new QRegularExpressionValidator(reg,this));
-    // 加载客户下拉框
-    loadCustomerCombo();
-    // 加载订单状态下拉框
-    loadStatusCombo();
-    //设置默认时间
-    QDateTime curTime=QDateTime::currentDateTime();
-    //默认开始时间是当天
-    ui->dateStart->setDateTime(curTime);
-    //默认结束时间是明天
-    ui->dateEnd->setDateTime(curTime.QDateTime::addDays(1));
-
-    //设置主表
-    if(!m_orderModel)
-    {
-        m_orderModel=new QStandardItemModel(this);
-        //设置表头
-        m_orderModel->setHorizontalHeaderLabels({"订单号","客户名称","下单日期","总额","状态"});
-        //自动缩放
-        ui->tableViewOrder->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        //设置不可编辑
-        ui->tableViewOrder->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        ui->tableViewOrder->setModel(m_orderModel);
-    }
-    //设置从表
-    if(!m_itemModel)
-    {
-        m_itemModel=new QStandardItemModel(this);
-        //设置表头
-        m_itemModel->setHorizontalHeaderLabels({"钢材类型","销售数量","销售单价","小计"});
-        //自动缩放
-        ui->tableViewItem->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        //设置不可编辑
-        ui->tableViewItem->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        ui->tableViewItem->setModel(m_itemModel);
-    }
-    //绑定点击主表从表显示明细
-    connect(ui->tableViewOrder->selectionModel(),&QItemSelectionModel::selectionChanged,this,&OrderQueryWidget::onOrderSelected);
-}
-
-
-
-
-
-
-
-
-void OrderQueryWidget::showEvent(QShowEvent *event)
-{
-    QWidget::showEvent(event);
-    loadOrderQueryWidget();
-}
+// void OrderQueryWidget::showEvent(QShowEvent *event)
+// {
+//     QWidget::showEvent(event);
+//     reload();
+// }
 
 //查询按钮
 void OrderQueryWidget::on_btnQuery_clicked()

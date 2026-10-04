@@ -40,71 +40,16 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="page_BaseInfo">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QTableView" name="tableView"/>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QPushButton" name="btnAdd">
-              <property name="contextMenuPolicy">
-               <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
-              </property>
-              <property name="text">
-               <string>新增一行</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnDel">
-              <property name="contextMenuPolicy">
-               <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
-              </property>
-              <property name="text">
-               <string>删除一行</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnExport">
-              <property name="contextMenuPolicy">
-               <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
-              </property>
-              <property name="text">
-               <string>导出excel</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Orientation::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
+      <widget class="BaseInfoWidget" name="page_BaseInfo">
+       <layout class="QHBoxLayout" name="horizontalLayout_3"/>
       </widget>
       <widget class="StockWidget" name="page_Stock"/>
       <widget class="SaleOrderWidget" name="page_SaleCreate"/>
       <widget class="OrderQueryWidget" name="page_OrderQuery"/>
       <widget class="CustomerManageWidget" name="page_Customer"/>
-      <widget class="QWidget" name="page_Report"/>
+      <widget class="ReportWidget" name="page_Report"/>
       <widget class="QWidget" name="page_Setting"/>
      </widget>
     </item>
@@ -315,6 +260,18 @@
    <class>CustomerManageWidget</class>
    <extends>QWidget</extends>
    <header location="global">customermanagewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ReportWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">reportwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BaseInfoWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">baseinfowidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -17,6 +17,7 @@ public:
     explicit SaleOrderWidget(QWidget *parent = nullptr);
     ~SaleOrderWidget();
 
+    void reload();
 private slots:
     void on_custName_currentIndexChanged(int index);
 
@@ -34,7 +35,7 @@ private:
     QString dateTime;//日期
     QString custName;//客户
 
-    QStandardItemModel *itemModel;
+    QStandardItemModel *itemModel=nullptr;
 
 private:
     void loadInformation();                //自动填入信息
@@ -44,11 +45,9 @@ private:
     void loadNumericDelegate();            //加载doubleSpinBox代理
     void loadSum();                        //计算总额总数
 
+    void initModel();                      //初始化model
 
 
-    // QWidget interface
-protected:
-    void showEvent(QShowEvent *event) override;
 };
 
 #endif // SALEORDERWIDGET_H

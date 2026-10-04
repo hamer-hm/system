@@ -14,34 +14,8 @@ SaleOrderWidget::SaleOrderWidget(QWidget *parent)
     , ui(new Ui::SaleOrderWidget)
 {
     ui->setupUi(this);
-    // loadInformation();
-
-    itemModel=new QStandardItemModel(this);
-    QStringList headers;
-    headers<<"钢材规格"<<"单价"<<"数量"<<"小计";
-    itemModel->setHorizontalHeaderLabels(headers);
-    ui->tableView->setModel(itemModel);
-
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-    ui->tableView->setColumnWidth(0,200);
-
-    // 新建第一行
-    QList<QStandardItem*> row;
-    for(int i=0;i<4;i++)
-    {
-        //新建空item
-        QStandardItem* item = new QStandardItem("");
-        if(i == 3||i==2||i==1)
-        {
-            //单价、数量、小计禁止编辑
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-        }
-        row.append(item);
-    }
-    itemModel->appendRow(row);
-    //绑定按钮
-    connect(ui->btnAdd,&QPushButton::clicked,this,&SaleOrderWidget::onBtnAddClicked);
+    initModel();
+    reload();
 }
 
 SaleOrderWidget::~SaleOrderWidget()
@@ -50,6 +24,33 @@ SaleOrderWidget::~SaleOrderWidget()
     delete ui;
 }
 
+//外部刷新接口（切库时调用）
+void SaleOrderWidget::reload()
+{
+    //清空明细（不重建 itemModel，保持 delegate 信号连接有效）
+    itemModel->removeRows(0, itemModel->rowCount());
+    //加一个空行
+    onBtnAddClicked();
+    //加载订单号 + 客户下拉框 + delegate
+    loadInformation();
+}
+
+//初始化表格模型
+void SaleOrderWidget::initModel()
+{
+    itemModel = new QStandardItemModel(this);
+    QStringList headers;
+    headers << "钢材规格" << "单价" << "数量" << "小计";
+    itemModel->setHorizontalHeaderLabels(headers);
+    ui->tableView->setModel(itemModel);
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->tableView->setColumnWidth(0, 200);
+
+    //绑定按钮
+    connect(ui->btnAdd, &QPushButton::clicked, this, &SaleOrderWidget::onBtnAddClicked);
+}
 
 //加载信息
 void SaleOrderWidget::loadInformation()
@@ -113,28 +114,7 @@ void SaleOrderWidget::loadSpecDelegate()
     if (!delegate)
     {
         delegate = new specDelegate(this);
-        // connect(delegate,&specDelegate::specSelected,this,[=](int row,double price,int specId)
-        //         {
-        //             qDebug() << "specSelected: row =" << row << "price =" << price;
-        //             // int row=ui->tableView->currentIndex().row();
-        //             //将specId存入model第0列
-        //             itemModel->setData(itemModel->index(row,0), specId, Qt::UserRole);
-        //             //设置model单价
-        //             itemModel->setData(itemModel->index(row,1),price,Qt::EditRole);
-        //             //设置model数量默认为1
-        //             itemModel->setData(itemModel->index(row,2),QString::number(1));
-        //             //读取model数量
-        //             double num=itemModel->item(row,2)->data(Qt::DisplayRole).toDouble();
-        //             //修改model小计
-        //             double subTotal=num*price;
-        //             itemModel->setData(itemModel->index(row,3),QString::number(subTotal,'f',2));
-        //             //设置只有在选择钢铁规格之后单价和数量才可被编辑
-        //             itemModel->item(row,1)->setEditable(true);
-        //             itemModel->item(row,2)->setEditable(true);
 
-        //             //加载总数总额
-        //             loadSum();
-        //         });
         connect(itemModel,&QStandardItemModel::dataChanged,this,[=](const QModelIndex &topLeft,const QModelIndex &bottomRight)
                 {
                     int row = topLeft.row();
@@ -254,17 +234,6 @@ void SaleOrderWidget::on_custName_currentIndexChanged(int index)
         ui->editPhone->setText(query.value(1).toString());
     }
 }
-
-
-
-void SaleOrderWidget::showEvent(QShowEvent *event)
-{
-    QWidget::showEvent(event);
-    // 页面切换显示，加载订单号
-    loadInformation();
-}
-
-
 
 
 

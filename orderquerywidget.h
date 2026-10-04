@@ -17,9 +17,9 @@ public:
     explicit OrderQueryWidget(QWidget *parent = nullptr);
     ~OrderQueryWidget();
 
+    void reload();   // 外部刷新接口（切库时调用）
 private slots:
     void on_chkDateEnable_clicked(bool checked);
-
 
     void on_btnQuery_clicked();
 
@@ -39,15 +39,13 @@ private:
     void loadStatusCombo();
     //加载主表
     void loadOrderTable(QSqlQuery &query);
-
+    //初始化model
+    void initModel();
 public:
     //外部接口，供mainwindow调用，加载查询订单窗口
     void loadOrderQueryWidget();
 
 
-    // QWidget interface
-protected:
-    void showEvent(QShowEvent *event) override;
 };
 
 #endif // ORDERQUERYWIDGET_H

@@ -36,6 +36,10 @@ private:
     QStandardItemModel* m_custModel = nullptr;
     // 加载客户数据，根据筛选条件查询并刷新表格
     void loadCustomerData();
+    //加载数据
+    void reload();
+    //重建模型
+    void initModel();
 };
 
 #endif // CUSTOMERMANAGEWIDGET_H

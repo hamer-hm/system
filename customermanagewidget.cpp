@@ -15,27 +15,49 @@ CustomerManageWidget::CustomerManageWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //初始化表格模型
-    m_custModel=new QStandardItemModel(this);
-    // 将模型绑定到tableView
-    ui->tableView->setModel(m_custModel);
-    //设置表头
-    QStringList headers{"客户编号","客户名称","联系人","联系电话","地址","备注"};
-    m_custModel->setHorizontalHeaderLabels(headers);
-    //最后一列自动拉伸填满剩余空间
+    // 最后一列自动拉伸填满剩余空间
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
 
-    //页面打开自动加载一次全部客户数据
+    // 初始化 + 加载数据
+    reload();
+}
+
+
+// 外部刷新接口（切库时调用）
+void CustomerManageWidget::reload()
+{
+    // 断开视图和旧模型
+    if (ui->tableView->model()) {
+        ui->tableView->setModel(nullptr);
+    }
+
+    // 销毁旧模型
+    delete m_custModel;
+    m_custModel=nullptr;
+
+    //重建模型
+    initModel();
+
+    // 加载数据
     loadCustomerData();
 }
 
+// 初始化表格模型
+void CustomerManageWidget::initModel()
+{
+    m_custModel = new QStandardItemModel(this);
+    ui->tableView->setModel(m_custModel);
+
+    QStringList headers{"客户编号", "客户名称", "联系人", "联系电话", "地址", "备注"};
+    m_custModel->setHorizontalHeaderLabels(headers);
+}
 
 CustomerManageWidget::~CustomerManageWidget()
 {
     delete ui;
 }
 
-
+//加载客户数据
 void CustomerManageWidget::loadCustomerData()
 {
     //清空原有行数据，保留表头
