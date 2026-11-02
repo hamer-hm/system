@@ -1,0 +1,564 @@
+/* ══════════════════════════════════════════════════════════════
+   Modern Gradient · Steel Sales System
+   全部样式表统一文件
+   风格：现代渐变风 (violet → fuchsia + 玻璃卡片 + 彩色光晕)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────
+   1. 全局 & 根容器  bg-slate-950
+   ────────────────────────────────────────────────────────────── */
+QWidget {
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: rgba(255, 255, 255, 0.92);
+    outline: none;
+}
+
+QMainWindow {
+    background: #0b0820;
+}
+
+QWidget#centralRoot {
+    background: #0b0820;
+}
+
+QToolTip {
+    background: #1e1b4b;
+    color: #ffffff;
+    border: 1px solid rgba(168, 85, 247, 0.5);
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   2. 左侧导航面板  深色垂直渐变 + 右侧微弱分界线
+   ────────────────────────────────────────────────────────────── */
+QWidget#leftPanel {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0.0 #1e1b4b,
+        stop:0.6 #150f38,
+        stop:1.0 #0b0820);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+QLabel#logoLabel {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 12px 2px 12px;
+}
+
+QLabel#logoSub {
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    padding: 0 12px 8px 12px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   3. 导航按钮  rounded-2xl + 玻璃 + 水平渐变
+   ────────────────────────────────────────────────────────────── */
+QToolButton#navButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    padding: 12px 16px;
+    color: rgba(255, 255, 255, 0.65);
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* hover: Luminous Borders + 淡渐变 */
+QToolButton#navButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 rgba(139, 92, 246, 0.30),
+        stop:0.5 rgba(168, 85, 247, 0.22),
+        stop:1.0 rgba(217, 70, 239, 0.16));
+    border: 1px solid rgba(168, 85, 247, 0.50);
+    color: #ffffff;
+}
+
+/* checked: bg-gradient-to-r from-violet-500 to-fuchsia-500 */
+QToolButton#navButton:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #8b5cf6,
+        stop:0.5 #a855f7,
+        stop:1.0 #d946ef);
+    border: 1px solid rgba(233, 213, 255, 0.55);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* checked + hover: Gradient Flow 色带位移 */
+QToolButton#navButton:checked:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #7c3aed,
+        stop:0.35 #9333ea,
+        stop:0.7 #c026d3,
+        stop:1.0 #e879f9);
+}
+
+QToolButton#navButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #6d28d9,
+        stop:1.0 #a21caf);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   4. 右侧 QStackedWidget
+   ────────────────────────────────────────────────────────────── */
+QStackedWidget#mainStack {
+    background: #0b0820;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   5. 玻璃卡片  backdrop-blur-xl bg-white/10 border-white/20
+   ────────────────────────────────────────────────────────────── */
+QWidget#glassCard {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+}
+
+QWidget#glassCard:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(168, 85, 247, 0.45);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   6. 文字层级
+   ────────────────────────────────────────────────────────────── */
+QLabel#pageTitle {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+QLabel#pageSub {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+QLabel#cardTitle {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+QLabel#chip {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(168, 85, 247, 0.16);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 12px;
+    padding: 5px 12px;
+    font-size: 12px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   7. 主按钮  rounded-2xl + 水平渐变
+   ────────────────────────────────────────────────────────────── */
+QPushButton#primaryBtn {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #7c3aed,
+        stop:0.5 #a855f7,
+        stop:1.0 #d946ef);
+    border: 1px solid rgba(233, 213, 255, 0.35);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 26px;
+    min-height: 22px;
+}
+
+QPushButton#primaryBtn:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #8b5cf6,
+        stop:0.4 #c026d3,
+        stop:1.0 #e879f9);
+}
+
+QPushButton#primaryBtn:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #6d28d9,
+        stop:1.0 #a21caf);
+}
+
+QPushButton#primaryBtn:disabled {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.30);
+}
+
+/* 次要按钮：玻璃风 */
+QPushButton#ghostBtn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 24px;
+}
+
+QPushButton#ghostBtn:hover {
+    background: rgba(168, 85, 247, 0.18);
+    border: 1px solid rgba(168, 85, 247, 0.55);
+}
+
+QPushButton#ghostBtn:pressed {
+    background: rgba(168, 85, 247, 0.30);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   8. 输入框  backdrop-blur-xl bg-white/10 rounded-2xl
+   ────────────────────────────────────────────────────────────── */
+QLineEdit,
+QTextEdit,
+QPlainTextEdit,
+QSpinBox,
+QDoubleSpinBox,
+QDateEdit,
+QComboBox {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 10px 16px;
+    color: #ffffff;
+    font-size: 14px;
+    selection-background-color: rgba(168, 85, 247, 0.55);
+    selection-color: #ffffff;
+    min-height: 20px;
+}
+
+QLineEdit:focus,
+QTextEdit:focus,
+QPlainTextEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QDateEdit:focus,
+QComboBox:focus {
+    border: 1px solid rgba(139, 92, 246, 0.55);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+QLineEdit::placeholder,
+QTextEdit::placeholder {
+    color: rgba(255, 255, 255, 0.40);
+}
+
+QLineEdit:disabled,
+QComboBox:disabled {
+    color: rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* 下拉箭头 */
+QComboBox::drop-down {
+    border: none;
+    width: 28px;
+}
+
+QComboBox QAbstractItemView {
+    background: #1e1b4b;
+    border: 1px solid rgba(168, 85, 247, 0.55);
+    border-radius: 12px;
+    color: #ffffff;
+    selection-background-color: rgba(168, 85, 247, 0.55);
+    selection-color: #ffffff;
+    outline: none;
+}
+QComboBox QAbstractItemView::item {
+    min-height:28px;
+    padding:6px 8px;
+}
+/* 兜底：表格代理弹出的列表视图 */
+QAbstractItemView#comboPopupView {
+    background: #1e1b4b;
+    border: 1px solid rgba(168, 85, 247, 0.55);
+    border-radius: 12px;
+}
+QAbstractItemView#comboPopupView::item{
+    min-height:28px;
+    padding:6px 8px;
+}
+/* ──────────────────────────────────────────────────────────────
+   9. 表格  深色玻璃风
+   ────────────────────────────────────────────────────────────── */
+QTableView,
+QTreeView,
+QListView {
+    background: rgba(255, 255, 255, 0.04);
+    alternate-background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.92);
+    gridline-color: rgba(255, 255, 255, 0.06);
+    selection-background-color: rgba(168, 85, 247, 0.38);
+    selection-color: #ffffff;
+    outline: none;
+}
+
+QTableView::item,
+QTreeView::item,
+QListView::item {
+    padding: 6px 8px;
+    border: none;
+}
+
+QTableView::item:hover,
+QTreeView::item:hover,
+QListView::item:hover {
+    background: rgba(168, 85, 247, 0.16);
+}
+
+QTableView::item:selected,
+QTreeView::item:selected,
+QListView::item:selected {
+    background: rgba(168, 85, 247, 0.38);
+    color: #ffffff;
+}
+
+QHeaderView {
+    background: transparent;
+    border: none;
+}
+
+QHeaderView::section {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+QHeaderView::section:hover {
+    background: rgba(168, 85, 247, 0.16);
+}
+
+QTableCornerButton::section {
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   10. 滚动条
+   ────────────────────────────────────────────────────────────── */
+QScrollBar:vertical {
+    background: transparent;
+    width: 8px;
+    margin: 4px 2px 4px 2px;
+}
+
+QScrollBar::handle:vertical {
+    background: rgba(168, 85, 247, 0.45);
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: rgba(217, 70, 239, 0.70);
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0;
+    background: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    background: transparent;
+    height: 8px;
+    margin: 2px 4px 2px 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background: rgba(168, 85, 247, 0.45);
+    border-radius: 4px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: rgba(217, 70, 239, 0.70);
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0;
+    background: none;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   11. 菜单 / 对话框 / 分组框
+   ────────────────────────────────────────────────────────────── */
+QMenu {
+    background: #1e1b4b;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 12px;
+    padding: 6px;
+    color: #ffffff;
+}
+
+QMenu::item {
+    padding: 8px 20px;
+    border-radius: 8px;
+}
+
+QMenu::item:selected {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 rgba(139, 92, 246, 0.55),
+        stop:1.0 rgba(217, 70, 239, 0.45));
+    color: #ffffff;
+}
+
+QMenu::separator {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.10);
+    margin: 6px 10px;
+}
+
+QDialog {
+    background: #0b0820;
+}
+
+QGroupBox {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    margin-top: 18px;
+    padding: 18px 14px 14px 14px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 16px;
+    padding: 0 8px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   12. Tab 标签页
+   ────────────────────────────────────────────────────────────── */
+QTabWidget::pane {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px;
+    top: -1px;
+}
+
+QTabBar::tab {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.60);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 10px 20px;
+    margin-right: 6px;
+    font-weight: 500;
+}
+
+QTabBar::tab:hover {
+    background: rgba(168, 85, 247, 0.14);
+    color: #ffffff;
+}
+
+QTabBar::tab:selected {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #8b5cf6,
+        stop:1.0 #d946ef);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   13. 进度条 / 复选框
+   ────────────────────────────────────────────────────────────── */
+QProgressBar {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    text-align: center;
+    color: #ffffff;
+    height: 14px;
+}
+
+QProgressBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0.0 #8b5cf6,
+        stop:1.0 #d946ef);
+    border-radius: 8px;
+}
+
+QCheckBox,
+QRadioButton {
+    color: rgba(255, 255, 255, 0.85);
+    spacing: 8px;
+}
+
+QCheckBox::indicator,
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+QCheckBox::indicator:checked,
+QRadioButton::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0.0 #8b5cf6,
+        stop:1.0 #d946ef);
+    border: 1px solid rgba(233, 213, 255, 0.55);
+}
+
+QRadioButton::indicator {
+    border-radius: 9px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   14. 状态栏
+   ────────────────────────────────────────────────────────────── */
+QStatusBar {
+    background: #150f38;
+    color: rgba(255, 255, 255, 0.65);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+QStatusBar::item {
+    border: none;
+}
+
+
+
+/* ========== 新增：表格单元格编辑器 ========== */
+/* 表格单元格编辑器：内边距要小，否则撑不下文字 */
+QTableView::item {
+    padding: 6px 5px;
+}
+
+QTableView QLineEdit,
+QTableView QComboBox
+{
+    padding: 10 3px;
+    min-height: 20px;
+    border-radius: 6px;
+}

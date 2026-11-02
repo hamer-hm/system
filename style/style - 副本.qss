@@ -1,0 +1,145 @@
+/* ========== 1、左侧导航栏 widget（你的侧边栏容器，包含全部btn_xxx） ========== */
+#widget {
+    background-color: #0f0f1e;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* 所有导航按钮 QToolButton：btn_BaseInfo、btn_Customer... */
+#widget QToolButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 rgba(139, 92, 246,0.15), stop:1 rgba(192,132,252,0.15));
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:16px;
+    padding:10px;
+    text-align:left;
+    icon-size:20px;
+    color:#ffffff;
+}
+#widget QToolButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 rgba(139, 92, 246,0.35), stop:1 rgba(192,132,252,0.35));
+    border:1px solid rgba(255,255,255,0.35);
+}
+/* 选中当前页面的按钮 */
+#widget QToolButton:checked {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #8b5cf6, stop:1 #c084fc);
+    border:none;
+}
+#widget QToolButton:pressed {
+    padding:8px;
+}
+
+/* ========== 2、右侧 stackedWidget + 各个page页面 ========== */
+#stackedWidget {
+    background-color:#0c0c1a;
+    border-radius:24px;
+}
+/* 所有page页面统一基础样式 */
+#stackedWidget QWidget[objectName^="page_"] {
+    background: transparent;
+}
+
+/* ========== 3、玻璃态卡片（在各个page里面放的面板，命名为card_panel） ========== */
+#card_panel{
+    background-color:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:24px;
+}
+#card_panel QLabel{
+    color:#ffffff;
+}
+#card_panel QLabel#title{
+    font-size:16px;
+    font-weight:bold;
+}
+#card_panel QLabel#desc{
+    color:rgba(255,255,255,0.7);
+}
+
+/* ========== 4、表单输入框 QLineEdit / QDateEdit / QSpinBox ========== */
+QLineEdit, QDateEdit, QSpinBox{
+    background-color:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:16px;
+    padding:10px 14px;
+    color:#ffffff;
+}
+QLineEdit:focus, QDateEdit:focus, QSpinBox:focus{
+    border:1px solid rgba(139, 92, 246,0.5);
+}
+QLineEdit::placeholder{
+    color:rgba(255,255,255,0.4);
+}
+
+/* ========== 5、按钮 QPushButton ========== */
+/* 主渐变按钮：命名 btn_primary（新增、保存） */
+QPushButton#btn_primary{
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #8b5cf6, stop:1 #d946ef);
+    border-radius:16px;
+    border:none;
+    padding:10px 20px;
+    color:white;
+    font-weight:500;
+}
+QPushButton#btn_primary:hover{
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #7c3aed, stop:1 #c026d3);
+}
+QPushButton#btn_primary:pressed{
+    padding:8px 18px;
+}
+/* 次要玻璃按钮 btn_secondary（取消、重置） */
+QPushButton#btn_secondary{
+    background-color:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:16px;
+    padding:10px 20px;
+    color:white;
+}
+QPushButton#btn_secondary:hover{
+    background-color:rgba(255,255,255,0.15);
+}
+
+/* ========== 6、数据表 QTableView（库存、客户、销售订单页面） ========== */
+QTableView{
+    background-color:rgba(255,255,255,0.05);
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.12);
+    color:#ffffff;
+    gridline-color:rgba(255,255,255,0.1);
+}
+QHeaderView::section{
+    background-color:rgba(139,92,246,0.2);
+    color:#fff;
+    padding:8px;
+    border:none;
+}
+QTableView::item:selected{
+    background-color:rgba(139,92,246,0.3);
+}
+
+/* ========== 7、下拉框 QComboBox ========== */
+QComboBox{
+    background-color:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:16px;
+    padding:8px 12px;
+    color:#fff;
+}
+QComboBox::drop-down{
+    border:none;
+}
+QComboBox QAbstractItemView{
+    background-color:#18182f;
+    color:#fff;
+    border-radius:12px;
+}
+
+/* ========== 8、状态栏 statusbar ========== */
+QStatusBar{
+    background-color:#0f0f1e;
+    color:#ffffff;
+}

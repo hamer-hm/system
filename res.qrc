@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/客户.png</file>
+        <file>image/报表统计.png</file>
+        <file>image/仓库_库存.png</file>
+        <file>image/单据详情.png</file>
+        <file>image/列表档案.png</file>
+        <file>image/设置.png</file>
+        <file>image/新建单据.png</file>
+        <file>style/style.qss</file>
+        <file>image/mainwindow图标.png</file>
+    </qresource>
+</RCC>
