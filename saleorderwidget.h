@@ -47,7 +47,8 @@ private:
 
     void initModel();                      //初始化model
 
-
+signals:
+    void order();
 };
 
 #endif // SALEORDERWIDGET_H

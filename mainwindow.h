@@ -17,9 +17,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void onDatabaseChanged(const QString &newPath);
-
 private:
     Ui::MainWindow *ui;
     BaseInfoWidget *m_baseInfo = nullptr;

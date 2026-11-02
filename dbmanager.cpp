@@ -26,7 +26,6 @@ bool DBManager::openDB(const QString &path)
     DB.setDatabaseName(path);
     if(!DB.open())
     {
-
         return false;
     }else
     {
@@ -74,7 +73,6 @@ bool DBManager::setDBPath(const QString &path)
     setting.setValue("dbPath", path);
     setting.endGroup();
     setting.sync();   // 立即写盘
-    emit databaseChanged(dbPath);
     return true;
 }
 

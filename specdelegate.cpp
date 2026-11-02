@@ -12,7 +12,6 @@ specDelegate::specDelegate(QObject *parent)
 QWidget *specDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QComboBox *com=new QComboBox(parent);
-    const int row = index.row();
     //获取数据库
     auto &db=DBManager::instance().getDB();
     QSqlQuery query(db);

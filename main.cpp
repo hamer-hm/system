@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
         dlg.setStyleSheet(qss);
         a.setStyleSheet(qss);
     }
-    dlg.show();
     if(dlg.exec() != QDialog::Accepted){
         return 0; // 用户点取消，直接退出
     }

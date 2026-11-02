@@ -50,7 +50,7 @@
       <widget class="OrderQueryWidget" name="page_OrderQuery"/>
       <widget class="CustomerManageWidget" name="page_Customer"/>
       <widget class="ReportWidget" name="page_Report"/>
-      <widget class="QWidget" name="page_Setting"/>
+      <widget class="SystemSettingsWidget" name="page_Setting"/>
      </widget>
     </item>
     <item row="0" column="0">
@@ -272,6 +272,12 @@
    <class>BaseInfoWidget</class>
    <extends>QWidget</extends>
    <header location="global">baseinfowidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SystemSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">systemsettingswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

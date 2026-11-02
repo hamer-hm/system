@@ -29,7 +29,7 @@ ReportWidget::ReportWidget(QWidget *parent)
         "钢材销售明细报表",
         "客户消费统计报表"
     });
-
+    initModel();
     reload();
 }
 
@@ -42,15 +42,15 @@ ReportWidget::~ReportWidget()
 //外部刷新接口（切库时调用）
 void ReportWidget::reload()
 {
-    //断开视图和旧模型
-    if (ui->tableView->model()) {
-        ui->tableView->setModel(nullptr);
-    }
-    //销毁旧模型
-    delete m_reportModel;
-    m_reportModel = nullptr;
-    //重建模型
-    initModel();
+    // //断开视图和旧模型
+    // if (ui->tableView->model()) {
+    //     ui->tableView->setModel(nullptr);
+    // }
+    // //销毁旧模型
+    // delete m_reportModel;
+    // m_reportModel = nullptr;
+    // //重建模型
+    // initModel();
     //清空界面统计
     clearReportUi();
 }

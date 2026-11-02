@@ -21,8 +21,7 @@ private:
     explicit DBManager(QObject *parent = nullptr);
     QSqlDatabase DB;
     QString dbPath="D:/system/system/steel_sales.db";
-signals:
-    void databaseChanged(const QString &Path);
+
 };
 
 #endif // DBMANAGER_H

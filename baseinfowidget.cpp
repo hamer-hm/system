@@ -33,7 +33,6 @@ BaseInfoWidget::BaseInfoWidget(QWidget *parent)
     // 设置tableView行为/模式
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectItems);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-
     openSpecTable();
 }
 
@@ -45,13 +44,6 @@ BaseInfoWidget::~BaseInfoWidget()
 // 外部刷新接口（切库时调用）
 void BaseInfoWidget::reloadTable()
 {
-    if (ui->tableView->model()) {
-        ui->tableView->setModel(nullptr);
-        ui->tableView->setSelectionModel(nullptr);
-    }
-    delete specModel; specModel = nullptr;
-    delete selModel;  selModel  = nullptr;
-
     openSpecTable();
 }
 

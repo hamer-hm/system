@@ -15,7 +15,8 @@ class CustomerManageWidget : public QWidget
 public:
     explicit CustomerManageWidget(QWidget *parent = nullptr);
     ~CustomerManageWidget();
-
+    //外部刷新接口（切库时调用）
+    void reload();
 private slots:
     // 查询按钮点击槽函数
     void on_btnQuery_clicked();
@@ -37,7 +38,6 @@ private:
     // 加载客户数据，根据筛选条件查询并刷新表格
     void loadCustomerData();
     //加载数据
-    void reload();
     //重建模型
     void initModel();
 };

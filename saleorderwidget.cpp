@@ -9,6 +9,7 @@
 #include<QSqlDatabase>
 #include"numericdelegate.h"
 #include<QDate>
+#include"stockwidget.h"
 SaleOrderWidget::SaleOrderWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SaleOrderWidget)
@@ -31,7 +32,7 @@ void SaleOrderWidget::reload()
     itemModel->removeRows(0, itemModel->rowCount());
     //加一个空行
     onBtnAddClicked();
-    //加载订单号 + 客户下拉框 + delegate
+    //加载订单号+客户下拉框+delegate
     loadInformation();
 }
 
@@ -342,6 +343,7 @@ void SaleOrderWidget::on_btnOk_clicked()
     }
 
     QSqlQuery query(db);
+    QSqlQuery upd(db);
     //循环把同一订单的所有钢材规格订单信息填入sale_order_item表
     for(int i=0;i<itemModel->rowCount();i++)
     {
@@ -355,7 +357,7 @@ void SaleOrderWidget::on_btnOk_clicked()
         //钢材规格
         QString specName=itemModel->item(i,0)->data(Qt::DisplayRole).toString();
         //查询钢材规格对应的库存数量
-        QSqlQuery upd(db);
+
         upd.prepare("UPDATE stock SET stockNum = stockNum - :n "
                     "WHERE specId = :id AND stockNum >= :n");
         upd.bindValue(":n", saleNum);
@@ -401,10 +403,17 @@ void SaleOrderWidget::on_btnOk_clicked()
     {
         QMessageBox::information(this,"成功","订单开单保存完成！");
         //清空model
-        itemModel->clear();
+        itemModel->removeRows(0,itemModel->rowCount());
         itemModel->setRowCount(0);
         //刷新页面，准备下一张单
         loadInformation();
+
+        //刷新库存表
+        emit order();
+
+        reload();
+        //加载总数总额
+        loadSum();
     }
     else
     {

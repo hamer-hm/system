@@ -40,6 +40,8 @@ LoginDialog::LoginDialog(QWidget *parent)
 LoginDialog::~LoginDialog()
 {
     delete ui;
+    delete m_settings;
+    m_settings=nullptr;
 }
 
 //登录按钮

@@ -15,6 +15,7 @@ StockWidget::StockWidget(QWidget *parent)
     , ui(new Ui::StockWidget)
 {
     ui->setupUi(this);
+    initModel();
     reload();
 }
 
@@ -26,16 +27,8 @@ StockWidget::~StockWidget()
 //外部刷新接口（切库时调用）
 void StockWidget::reload()
 {
-    //断开视图和旧模型
-    if (ui->tableView->model()) {
-        ui->tableView->setModel(nullptr);
-    }
-    //销毁旧模型
-    delete m_stockModel;
-    m_stockModel = nullptr;
-
-    //重建模型
-    initModel();
+    // //重建模型
+    // initModel();
 
     //加载数据
     m_stockModel->select();
@@ -49,7 +42,7 @@ void StockWidget::initModel()
     m_stockModel = new QSqlRelationalTableModel(this, db);
     m_stockModel->setTable("stock");
     //设置编辑策略
-    m_stockModel->setEditStrategy(QSqlRelationalTableModel::OnRowChange);
+    m_stockModel->setEditStrategy(QSqlRelationalTableModel::OnManualSubmit);
 
     //将typeName替换为typeName
     int specCol = m_stockModel->record().indexOf("typeId");
@@ -57,15 +50,17 @@ void StockWidget::initModel()
 
     //设置表头
     m_stockModel->setHeaderData(m_stockModel->record().indexOf("stockId"), Qt::Horizontal, "库存ID");
-    m_stockModel->setHeaderData(m_stockModel->record().indexOf("typeName"), Qt::Horizontal, "钢材规格");
+    m_stockModel->setHeaderData(specCol, Qt::Horizontal, "钢材规格");
     m_stockModel->setHeaderData(m_stockModel->record().indexOf("stockNum"), Qt::Horizontal, "库存数量(吨)");
     m_stockModel->setHeaderData(m_stockModel->record().indexOf("costPrice"), Qt::Horizontal, "成本单价");
     m_stockModel->setHeaderData(m_stockModel->record().indexOf("updateTime"), Qt::Horizontal, "更新时间");
 
     //设置model
     ui->tableView->setModel(m_stockModel);
+
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //隐藏specId列
-    ui->tableView->setColumnHidden(1, true);
+    ui->tableView->setColumnHidden(m_stockModel->record().indexOf("specId"), true);
     //设置代理
     ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
     //设置拉伸
@@ -74,37 +69,82 @@ void StockWidget::initModel()
 //入库
 void StockWidget::on_btnStockIn_clicked()
 {
-    auto &db=DBManager::instance().getDB();//获取数据库
+    auto &db=DBManager::instance().getDB();
     StockInDialog dlg(this);
     if(dlg.exec()==StockInDialog::Accepted)
     {
-        int typeId=dlg.getTypeId();        //获取typeId
-        double stockNum = dlg.getStockNum();  //获取stockNum;
+        int specId = dlg.getSpecId();
+        int typeId = dlg.getTypeId();
+        double stockNum = dlg.getStockNum();
+        double costPrice = dlg.getCostPrice();
 
-        if(stockNum <= 0)                   //校验输入数量
+        if(stockNum <= 0)
         {
             QMessageBox::warning(this,"提示","入库数量必须大于0");
             return;
         }
-        QSqlQuery query(db);
-        query.prepare("SELECT typeId,stockNum FROM stock WHERE typeId= :typeId");  //根据typeId查询typeId,stockNum
-        query.bindValue(":typeId",typeId);
-        query.exec();
-        if(!query.next())
-        {
-            QMessageBox::critical(this,"error","不存在此钢材规格！");
-        }else
-        {
-            double oldStockNum=query.value("stockNum").toDouble();                     //获取原来的钢材数量
-            QString time=QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm::ss");//获取当前时间
-            query.prepare("UPDATE stock SET stockNum=:stockNum,updateTime=:updateTime WHERE typeId=:typeId"); //更新数据
 
-            query.bindValue(":typeId",typeId);
-            query.bindValue(":stockNum",oldStockNum+stockNum);
-            query.bindValue(":updateTime",time);
-            query.exec();
+        if (costPrice <= 0) {
+            QMessageBox::warning(this, "提示", "成本单价必须大于0");
+            return;
+        }
+        QSqlQuery query(db);
+        // 校验：该specId在steel_spec中存在
+        query.prepare("SELECT specId FROM steel_spec WHERE specId = :specId");
+        query.bindValue(":specId", specId);
+        if(!query.exec() || !query.next())
+        {
+            QMessageBox::critical(this,"错误","该钢材规格不存在！");
+            return;
+        }
+
+        db.transaction();
+        // 查询当前specId有没有库存记录
+        query.prepare("SELECT stockNum FROM stock WHERE specId= :specId");
+        query.bindValue(":specId",specId);
+        if(!query.exec())
+        {
+            db.rollback();
+            QMessageBox::critical(this,"error","查询库存失败："+query.lastError().text());
+            return;
+        }
+
+        QString time=QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+        bool hasStock = query.next();
+        bool ok = false;
+        if(hasStock)
+        {
+            // 已有库存：更新
+            double oldStockNum=query.value("stockNum").toDouble();
+            double newNum = oldStockNum + stockNum;
+            query.prepare("UPDATE stock SET stockNum=:stockNum,updateTime=:updateTime WHERE specId=:specId");
+            query.bindValue(":specId",specId);
+            query.bindValue(":stockNum", newNum);
+            query.bindValue(":updateTime", time);
+            ok = query.exec();
+        }
+        else
+        {
+            // 新增库存：specId、typeId两个字段都赋值！解决NOT NULL报错
+            query.prepare("INSERT INTO stock(specId, typeId, stockNum, costPrice, updateTime) VALUES(:specId, :typeId, :stockNum, :costPrice, :updateTime)");
+            query.bindValue(":specId", specId);
+            query.bindValue(":typeId", typeId);
+            query.bindValue(":stockNum", stockNum);
+            query.bindValue(":costPrice", costPrice);
+            query.bindValue(":updateTime", time);
+            ok = query.exec();
+        }
+
+        if(ok)
+        {
+            db.commit();
             QMessageBox::information(this,"提示","入库成功！");
             m_stockModel->select();
+        }
+        else
+        {
+            db.rollback();
+            QMessageBox::critical(this,"error","入库失败："+query.lastError().text());
         }
     }
 }
@@ -118,8 +158,8 @@ void StockWidget::on_btnStockDel_clicked()
         QMessageBox::information(this,"提示","请选中一行数据！");
         return;
     }
-    bool ok=QMessageBox::question(this,"提示","你真的要删除这一行数据吗？");//二次确认
-    if(ok)
+    const auto ok=QMessageBox::question(this,"提示","你真的要删除这一行数据吗？",QMessageBox::Yes|QMessageBox::No);//二次确认
+    if(ok==QMessageBox::Yes)
     {
         if(m_stockModel->removeRow(curIndex.row()))
         {
@@ -134,11 +174,3 @@ void StockWidget::on_btnStockDel_clicked()
     }
 }
 
-
-
-// void StockWidget::showEvent(QShowEvent *event)
-// {
-//     QWidget::showEvent(event);
-//     // 页面切换显示，加载订单号
-//
-// }

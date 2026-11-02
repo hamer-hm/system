@@ -17,8 +17,9 @@ CustomerManageWidget::CustomerManageWidget(QWidget *parent)
 
     // 最后一列自动拉伸填满剩余空间
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
-
-    // 初始化 + 加载数据
+    //初始化model
+    initModel();
+    //初始化
     reload();
 }
 
@@ -26,17 +27,17 @@ CustomerManageWidget::CustomerManageWidget(QWidget *parent)
 // 外部刷新接口（切库时调用）
 void CustomerManageWidget::reload()
 {
-    // 断开视图和旧模型
-    if (ui->tableView->model()) {
-        ui->tableView->setModel(nullptr);
-    }
+    // // 断开视图和旧模型
+    // if (ui->tableView->model()) {
+    //     ui->tableView->setModel(nullptr);
+    // }
 
-    // 销毁旧模型
-    delete m_custModel;
-    m_custModel=nullptr;
+    // // 销毁旧模型
+    // delete m_custModel;
+    // m_custModel=nullptr;
 
-    //重建模型
-    initModel();
+    // //重建模型
+    // initModel();
 
     // 加载数据
     loadCustomerData();
