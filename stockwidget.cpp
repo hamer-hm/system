@@ -23,7 +23,7 @@ StockWidget::~StockWidget()
 {
     delete ui;
 }
-
+//
 //外部刷新接口（切库时调用）
 void StockWidget::reload()
 {
